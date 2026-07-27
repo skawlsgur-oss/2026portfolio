@@ -67,20 +67,19 @@
 ├── 1. index.html (메인 사용자 포트폴리오 사이트)
 │   ├── Header Navigation (메뉴 & '🔐 Admin' 접속 버튼)
 │   ├── Hero Section (메인 타이틀 & CTA)
-│   ├── About Me Section (자기소개 및 관심 분야)
+│   ├── About Me Section (자기소개 및 관심 분야 - Supabase 실시간 동기화)
 │   ├── Projects Section (동적 AI 작업물 카테고리 필터 카드 & 라이브/GitHub 링크)
 │   ├── Tech Stack & AI Focus (기술 스택)
 │   └── Footer (소셜 링크 & 카피라이트)
 │
-└── 2. admin.html (독립 관리자 대시보드 시스템) ⭐ [NEW]
-    ├── [인증 뷰] 관리자 로그인 폼 (비밀번호 PIN verification)
-    └── [대시보드 뷰] 관리자 메인 컨트롤 타워
-        ├── Header (로그아웃 버튼 & '🚀 메인으로 이동' 버튼)
-        ├── Tab 1: 자기소개 (About Me) 수정 폼 (이름, 관심분야, 본문)
-        └── Tab 2: 작업물 (Projects) 풀 CRUD 관리자
-            ├── [Create] 신규 AI 프로젝트 추가 폼 (제목, 카테고리, 태그, 데모URL, GitHub)
-            ├── [Read/Update] 기존 작업물 인라인 목록 수정
-            └── [Delete/Reset] 작업물 삭제 및 기본 데이터 초기화
+├── 2. admin.html (독립 관리자 대시보드 시스템)
+│   ├── [인증 뷰] 관리자 로그인 폼 (비밀번호 PIN verification: 1234)
+│   └── [대시보드 뷰] 관리자 메인 컨트롤 타워
+│       ├── Header (로그아웃 버튼 & '🚀 메인으로 이동' 버튼)
+│       ├── Tab 1: 자기소개 (About Me) 수정 폼 (Supabase + LocalStorage 저장)
+│       └── Tab 2: 작업물 (Projects) 풀 CRUD 관리자 (Supabase + LocalStorage 저장)
+│
+└── 3. supabase_schema.sql (Supabase DDL 데이터베이스 생성 스크립트)
 ```
 
 ---
@@ -100,7 +99,7 @@
 ### 5.3 [섹션 3] 자기소개란 (About Me Section)
 - **기본 정보:** 이름 (남진혁), 관심 분야 (AI 트렌드, 생성형 AI 웹앱), 할 수 있는 것 (웹/앱 개발, AI API 연동)
 - **자기소개 텍스트:** AI 기술을 쉽게 서비스로 녹여내는 개발 방향성 공유
-- **동적 로드:** `localStorage`에 저장된 자기소개 데이터가 최우선으로 반영됨
+- **Supabase 동적 로드:** `about_me` 테이블 데이터 최우선 반영 (없을 시 `localStorage` 및 기본값 사용)
 
 ### 5.4 [섹션 4] 작업물 페이지 (Projects Section)
 - **프로젝트 카드 구성 요소:**
@@ -110,17 +109,17 @@
   - **핵심 이동 버튼 (Action Buttons):**
     - 🚀 **`데모 체험하기 (Live Demo)`**: 해당 웹/앱으로 바로 이동하는 클릭 가능 링크 (예: AI Studio 앱 주소)
     - 🐙 **`GitHub 코드보기`**: 개발 소스코드 저장소로 바로 이동
-- **동적 CRUD 렌더링:** 관리자 페이지(`admin.html`)에서 추가/수정/삭제한 내용이 메인 화면에 즉시 동적 렌더링됨
+- **Supabase 동적 CRUD 렌더링:** `projects` 테이블 데이터를 모든 방문자 화면에 즉시 수신/표시
 
 ### 5.5 [섹션 5] 기술 스택 & 관심 분야 (Skills & Interests)
 - **관심 분야 (Interests):** AI 트렌드 리서치, LLM 파인튜닝, 프롬프트 엔지니어링, 웹앱 서비스 구축
-- **기술 스택 (Tech Stack):** Frontend (HTML/CSS/JS, React), AI/Backend (OpenAI API, Claude, Python)
+- **기술 스택 (Tech Stack):** Frontend (HTML/CSS/JS, React), AI/Backend (OpenAI API, Claude, Python, Supabase)
 
 ### 5.6 [섹션 6] 푸터 (Footer)
 - **카피라이트:** `© 2026 Nam Jin-hyeok. All rights reserved.`
 - **연락처 & 링크:** 이메일, GitHub 주소, 블로그/SNS
 
-### 5.7 [섹션 7] 관리자 전용 대시보드 페이지 (`admin.html`) ⭐ *핵심 신규 사양*
+### 5.7 [섹션 7] 관리자 전용 대시보드 페이지 (`admin.html`)
 
 #### 5.7.1 로그인 & 인증 처리 (Authentication)
 - **로그인 화면:** `admin.html` 첫 접속 시 4자리 PIN 비밀번호(기본값: `1234`) 입력창 표시
@@ -129,49 +128,43 @@
 
 #### 5.7.2 자기소개 (About Me) 편집 탭
 - **입력 항목:** 이름, 직함, 관심 분야 한 줄 요약, 자기소개 본문 텍스트 (Textarea)
-- **저장 기능:** `💾 자기소개 저장` 버튼 클릭 시 `localStorage.setItem('jin_portfolio_about_data', ...)` 실행 및 즉시 반영
+- **Supabase 저장 기능:** `💾 자기소개 저장` 클릭 시 `about_me` 테이블 upsert 및 `localStorage` 동시 보존
 
 #### 5.7.3 작업물 (Projects) 풀 CRUD 대시보드 탭
 - **1. [Create] 신규 작업물 등록 폼:**
-  - 제목 (예: "AI스케치 해석기")
-  - 카테고리 선택 (`web` [AI 웹사이트] / `app` [AI 모바일 앱])
-  - 한 줄 설명 (Description)
-  - 이모지 아이콘 (Icon)
-  - 기술 스택 태그 (쉼표로 구분, 예: `#VisionAI, #OpenAI, #React`)
-  - 데모 접속 URL (Live Demo Link)
-  - GitHub 저장소 URL
+  - 제목 (예: "AI스케치 해석기"), 카테고리(`web`/`app`), 한 줄 설명, 아이콘 이모지, 태그, 데모 접속 URL, GitHub URL
+  - 제출 시 Supabase `projects` 테이블 `INSERT`/`UPSERT` 및 `localStorage` 동기화
 - **2. [Read/Update] 기존 작업물 리스트 & 수정:**
-  - 등록된 작업물 목록을 글래스모피즘 카드로 나열
-  - `✏️ 수정` 버튼 클릭 시 인라인 폼이 열려 해당 작업물 항목 즉시 수정 가능
+  - 등록된 작업물 목록을 글래스모피즘 카드로 나열 및 실시간 인라인 수정
 - **3. [Delete] 작업물 삭제:**
-  - `🗑️ 삭제` 버튼 클릭 시 확인 팝업 후 해당 작업물 `localStorage` 목록에서 제거
+  - `🗑️ 삭제` 버튼 클릭 시 확인 팝업 후 Supabase DB & `localStorage`에서 삭제
 - **4. [Reset] 기본 시드 데이터 복원:**
-  - `🔄 기본 데이터로 초기화` 버튼 제공하여 언제든 초기 샘플 데이터로 복원 가능
+  - `🔄 기본 데이터로 초기화` 버튼 제공하여 초기 시드 프로젝트 데이터로 복원
 
 ---
 
-## 6. 데이터 흐름 및 저장 사양 (Data Architecture)
+## 6. 데이터 흐름 및 클라우드 DB 사양 (Data Architecture)
 
 ```mermaid
 graph TD
-    A[사용자 메인 페이지 index.html] --> B[LocalStorage 데이터 확인]
-    B -- 데이터 존재 --> C[저장된 자기소개 및 프로젝트 동적 렌더링]
-    B -- 데이터 없음 --> D[기본 시드 프로젝트 데이터 렌더링]
+    A[방문자 메인 페이지 index.html] --> B{Supabase Cloud DB 연결}
+    B -- 성공 --> C[about_me & projects 테이블 데이터 실시간 조회 및 렌더링]
+    B -- 실패/오류 --> D[LocalStorage 및 시드 데이터 폴백]
     
-    E[헤더 'Admin' 버튼 클릭] --> F[admin.html 이동]
-    F --> G{비밀번호 PIN 1234 인증}
-    G -- 성공 --> H[관리자 대시보드 화면 표시]
-    H --> I[자기소개 / 작업물 수정 & 신규 추가]
-    I --> J[LocalStorage 데이터 저장 jin_portfolio_projects_data]
-    J --> A
+    E[관리자 페이지 admin.html] --> F{PIN 1234 인증}
+    F -- 성공 --> G[관리자 대시보드]
+    G --> H[자기소개 및 신규/수정/삭제 작업물 입력]
+    H --> I[Supabase Cloud DB & LocalStorage 동시 저장]
+    I --> B
 ```
 
-### LocalStorage 키 명세 (Storage Keys)
-1. **자기소개 데이터:** `jin_portfolio_about_data`
-   - Structure: `{ name, role, field, bio }`
-2. **작업물 목록 데이터:** `jin_portfolio_projects_data`
-   - Structure: `Array<{ id, title, category, desc, icon, tags, demoUrl, githubUrl }>`
-3. **관리자 인증 상태:** `jin_admin_auth` (SessionStorage)
+### 6.1 Supabase 클라우드 데이터베이스 설정 (v1.2 추가)
+- **Supabase URL:** `https://dlwhnthulpxxfyeulrbw.supabase.co`
+- **Publishable API Key:** `sb_publishable_Zk90bj_VU5WvQL0ubJRQWQ_TPSi5KHT`
+- **테이블 구조:**
+  1. `about_me` (id, name, role, field, bio, updated_at)
+  2. `projects` (id, title, category, desc_text, icon, tags, demo_url, github_url, created_at)
+- **안전 장치:** Supabase 연동 실패 시 브라우저 `localStorage`로 자동 전환되는 이중 데이터 보존(Fallback) 제공
 
 ---
 
@@ -179,11 +172,12 @@ graph TD
 
 | 구분 | 기술 / 도구 | 선정 이유 |
 | :--- | :--- | :--- |
-| **Frontend** | HTML5, Vanilla CSS3, Modern JavaScript (ES6+) | 가볍고 빠른 로딩, 백엔드 서버 없는 독립 동작 |
-| **Admin System** | `admin.html`, `js/admin_dashboard.js` | 독립된 대시보드 레이아웃과 완벽한 CRUD 관리자 기능 제공 |
+| **Frontend** | HTML5, Vanilla CSS3, Modern JavaScript (ES6+) | 가볍고 빠른 로딩, 백엔드 서버 없는 정적 파일 구동 |
+| **Database** | **Supabase Cloud DB** (PostgreSQL) | 서버 구축 없이 클라우드 DB에 작업물 및 자기소개 데이터 보존 |
+| **Admin System** | `admin.html`, `js/admin_dashboard.js` | 독립 대시보드 레이아웃과 풀 CRUD 작업물 관리 기능 제공 |
 | **Style Concept**| Glassmorphism, CSS Custom Variables (`design.md`) | 메인 포트폴리오와 완벽히 통일된 다크 네온 어드민 UI |
-| **Data Persistence**| Browser `localStorage` API | 서버 DB 없이도 사용자가 수정한 작업물과 자기소개 지속 보존 |
-| **Deployment** | Vercel / GitHub Pages | 1분 이내 정적 웹사이트 배포 호환 |
+| **Data Backup**| Browser `localStorage` API | 네트워크 단절 시에도 포트폴리오 데이터 100% 정상 작동 |
+| **Deployment** | Vercel / GitHub Pages | 정적 파일 호스팅 및 글로벌 CDN 무료 배포 |
 
 ---
 
@@ -195,13 +189,23 @@ graph TD
 - [x] 컴포넌트 스토리북 데모 (`components_demo.html`) 제작
 - [x] GitHub 저장소 푸시 (`https://github.com/skawlsgur-oss/2026portfolio.git`)
 
-### 2단계: 독립 관리자 페이지 및 풀 CRUD 구현 (v1.1 - 진행 중)
-- [x] PRD v1.1 관리자 페이지 기능 요구사항 추가 (`prd.md`)
-- [ ] 관리자 전용 스타일 시트 `css/admin.css` 제작
-- [ ] 관리자 페이지 `admin.html` (로그인 뷰 + 대시보드 뷰) 개발
-- [ ] 관리자 JS 대시보드 로직 `js/admin_dashboard.js` (로그인, 자기소개 편집, 작업물 CRUD) 작성
-- [ ] 메인 `index.html` 및 `js/projects.js`와 `localStorage` 실시간 연동 처리
+### 2단계: 독립 관리자 페이지 및 풀 CRUD 구현 (v1.1 - 완료)
+- [x] PRD v1.1 관리자 페이지 기능 요구사항 명세 작성
+- [x] 관리자 전용 스타일 시트 `css/admin.css` 제작
+- [x] 관리자 페이지 `admin.html` (로그인 뷰 + 대시보드 뷰) 개발
+- [x] 관리자 JS 대시보드 로직 `js/admin_dashboard.js` (로그인, 자기소개 편집, 작업물 CRUD) 작성
 
-### 3단계: 최종 검증 및 GitHub 배포 (v1.1 - 완료 예정)
-- [ ] `admin.html`에서 작업물 추가/수정/삭제 후 `index.html` 연동 테스트
-- [ ] GitHub 저장소 최신 코드 커밋 및 푸시
+### 3단계: Supabase 클라우드 데이터베이스 연동 (v1.2 - 완료)
+- [x] PRD v1.2 Supabase 연동 명세 작성 (`prd.md`)
+- [x] Supabase DDL SQL 생성 스크립트 `supabase_schema.sql` 작성
+- [x] Supabase 클라이언트 SDK 헬퍼 모듈 `js/supabase_client.js` 제작
+- [x] 방문자 메인 페이지(`index.html`) 및 관리자 대시보드(`admin.html`) Supabase DB 연동
+- [x] 전체 자동화 검증 테스트 및 GitHub 최신 코드 커밋/푸시 완료
+
+---
+
+## 9. 성공 측정 지표 (Success Metrics)
+
+1. **접근 편의성:** 메인 화면 접속 후 3초 이내에 작업물 데모 링크를 찾아 클릭할 수 있는가?
+2. **데이터 지속성:** 관리자가 `admin.html`에서 작업물을 추가하면 Supabase DB에 저장되어 모든 방문자에게 실시간 노출되는가?
+3. **안정성:** Supabase 네트워크 장애 시에도 `localStorage`를 통해 웹사이트가 중단 없이 가동되는가?
