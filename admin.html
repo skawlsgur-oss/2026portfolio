@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- 기본 메타 태그 & SEO -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | 2026 Nam Jin-hyeok AI Portfolio</title>
+  <meta name="description" content="남진혁 AI 포트폴리오 관리자 전용 대시보드 페이지입니다.">
+
+  <!-- 웹 폰트 (Google Fonts & Pretendard CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- 모듈화된 CSS 스타일 컴포넌트 -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. 관리자 상단 고정 헤더
+       ========================================================================== -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <span class="logo-text">JINHYEOK.AI Admin</span>
+        <span class="logo-dot"></span>
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html" class="btn btn-sm btn-outline">
+          🚀 메인 포트폴리오로 이동
+        </a>
+        <button id="logoutBtn" class="btn btn-sm btn-secondary" style="display: none;">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. 관리자 인증 전용 로그인 화면 (PIN 비밀번호 인증)
+       ========================================================================== -->
+  <div id="loginWrapper" class="admin-login-wrapper">
+    <div class="glass-card admin-login-card animate-fade-in">
+      <div class="modal-icon">🔐</div>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
+        Admin Authentication
+      </h2>
+      <p style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 24px;">
+        관리자 대시보드 접속을 위해 비밀번호 4자리를 입력하세요.
+      </p>
+
+      <div class="form-group" style="margin-bottom: 20px;">
+        <input type="password" id="loginPinInput" class="form-input" placeholder="비밀번호 입력 (기본: 1234)" style="text-align: center; font-size: 1.25rem; letter-spacing: 0.2em;" maxlength="4" autofocus>
+      </div>
+
+      <div id="loginErrorMsg" class="modal-error-msg" style="display: none; color: var(--accent-pink); margin-bottom: 16px;"></div>
+
+      <button id="loginBtn" class="btn btn-md btn-primary" style="width: 100%;">
+        🔓 대시보드 로그인
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       3. 관리자 메인 대시보드 영역 (인증 완료 시 활성화)
+       ========================================================================== -->
+  <main id="dashboardWrapper" class="admin-dashboard container">
+    <!-- 대시보드 상단 타이틀 -->
+    <div class="admin-header-bar">
+      <div class="admin-title-group">
+        <h1>⚙️ Admin <span>Dashboard</span></h1>
+        <p>포트폴리오 자기소개 수정 및 작업물(Projects) 풀 CRUD 관리자 컨트롤 타워입니다.</p>
+      </div>
+    </div>
+
+    <!-- 탭 네비게이션 메뉴 -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="tabProjects">
+        📂 작업물 (Projects) CRUD 관리
+      </button>
+      <button class="tab-btn" data-tab="tabAbout">
+        👤 자기소개 (About Me) 관리
+      </button>
+    </div>
+
+    <!-- ==========================================================================
+         [ 탭 1 ] 작업물 (Projects) 풀 CRUD 대시보드
+         ========================================================================== -->
+    <div id="tabProjects" class="tab-content active">
+      <!-- 1. 신규 작업물 등록 폼 (Create) -->
+      <div class="glass-card crud-form-card">
+        <h3 class="crud-form-title">✨ 신규 AI 프로젝트 등록</h3>
+        <form id="addProjectForm">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">프로젝트 제목</label>
+              <input type="text" id="pTitle" class="form-input" placeholder="예: AI스케치 해석기" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">카테고리</label>
+              <select id="pCategory" class="form-input" required style="background-color: #0B0F17;">
+                <option value="web">AI 웹사이트 (Web)</option>
+                <option value="app">AI 모바일 앱 (App)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">이모지 아이콘</label>
+              <input type="text" id="pIcon" class="form-input" placeholder="예: ✏️ 또는 🔮" value="🚀">
+            </div>
+            <div class="form-group">
+              <label class="form-label">기술 스택 태그 (쉼표 구분)</label>
+              <input type="text" id="pTags" class="form-input" placeholder="예: VisionAI, OpenAI, React, FastAPI">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">데모 체험 접속 URL (Live Demo)</label>
+              <input type="url" id="pDemoUrl" class="form-input" placeholder="https://ai.studio/apps/..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">GitHub 저장소 URL</label>
+              <input type="url" id="pGithubUrl" class="form-input" placeholder="https://github.com/namjinhyeok/...">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label">프로젝트 한 줄 설명</label>
+            <textarea id="pDesc" class="form-textarea" placeholder="프로젝트의 주요 기능과 특징을 간략히 작성하세요." required style="min-height: 80px;"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-md btn-primary">
+            ➕ 신규 작업물 등록하기
+          </button>
+        </form>
+      </div>
+
+      <!-- 2. 기존 작업물 목록 및 삭제/초기화 (Read, Delete, Reset) -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-main);">
+          📋 현재 등록된 작업물 목록
+        </h3>
+        <button id="resetProjectsBtn" class="btn btn-sm btn-outline" style="color: var(--accent-pink); border-color: rgba(236, 72, 153, 0.3);">
+          🔄 기본 시드 데이터로 초기화
+        </button>
+      </div>
+
+      <div id="adminProjectsList" class="admin-project-list">
+        <!-- admin_dashboard.js 에서 동적 렌더링됩니다 -->
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         [ 탭 2 ] 자기소개 (About Me) 관리
+         ========================================================================== -->
+    <div id="tabAbout" class="tab-content">
+      <div class="glass-card">
+        <h3 class="crud-form-title">👤 자기소개 및 프로필 정보 수정</h3>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">이름</label>
+            <input type="text" id="adminName" class="form-input" value="남진혁">
+          </div>
+          <div class="form-group">
+            <label class="form-label">직함 / 대표 역할</label>
+            <input type="text" id="adminRole" class="form-input" value="AI Web/App Developer">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">관심 분야 한 줄 요약</label>
+          <input type="text" id="adminField" class="form-input" value="AI 트렌드 리서치 & 생성형 AI 웹앱 개발">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label">자기소개 본문 문구</label>
+          <textarea id="adminBio" class="form-textarea" style="min-height: 160px;"></textarea>
+        </div>
+
+        <button id="saveAboutBtn" class="btn btn-md btn-primary">
+          💾 자기소개 저장하기 (LocalStorage)
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- 관리자 대시보드 스크립트 -->
+  <script src="js/admin_dashboard.js"></script>
+</body>
+</html>

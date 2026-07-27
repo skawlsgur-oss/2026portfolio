@@ -1,0 +1,199 @@
+/* ==========================================================================
+   2026 Nam Jin-hyeok AI Portfolio - 관리자 대시보드 전용 스타일 (admin.css)
+   design.md 가이드에 맞춘 네온 다크 테마, 탭 네비게이션, CRUD 폼 스타일
+   ========================================================================== */
+
+/* [ 1. 로그인 전용 화면 스타일 ] */
+.admin-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  padding: 40px 32px;
+}
+
+/* [ 2. 관리자 메인 대시보드 레이아웃 ] */
+.admin-dashboard {
+  display: none; /* 로그인 완료 시 display: block */
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+.admin-dashboard.active {
+  display: block;
+}
+
+.admin-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.admin-title-group h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-title-group p {
+  font-size: 0.95rem;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+/* [ 3. 탭 네비게이션 (Tab Menu) ] */
+.admin-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-sub);
+  font-size: 1.0rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* [ 4. CRUD 등록 및 편집 폼 스타일 ] */
+.crud-form-card {
+  margin-bottom: 32px;
+}
+
+.crud-form-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* [ 5. 작업물 리스트 관리 카드 ] */
+.admin-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-project-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+}
+
+.admin-project-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.admin-project-icon {
+  font-size: 2.2rem;
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-glass);
+}
+
+.admin-project-details h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.admin-project-details p {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.admin-project-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* [ 6. 인라인 수정 폼 영역 ] */
+.inline-edit-box {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-glass);
+  display: none;
+}
+
+.inline-edit-box.active {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .admin-project-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .admin-project-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

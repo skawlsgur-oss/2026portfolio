@@ -59,12 +59,25 @@ const PROJECTS_DATA = [
 
 class ProjectsManager {
   constructor() {
-    this.projects = PROJECTS_DATA;
+    this.projects = this.loadProjects();
     this.activeFilter = 'all';
 
     this.initElements();
     this.bindEvents();
     this.renderProjects();
+  }
+
+  /* [ LocalStorage 연동 프로젝트 로드 ] */
+  loadProjects() {
+    const savedProjects = localStorage.getItem('jin_portfolio_projects_data');
+    if (savedProjects) {
+      try {
+        return JSON.parse(savedProjects);
+      } catch (e) {
+        console.error('LocalStorage Projects 파싱 실패:', e);
+      }
+    }
+    return PROJECTS_DATA;
   }
 
   /* [ 1. DOM 엘리먼트 초기화 ] */
