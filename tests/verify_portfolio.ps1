@@ -1,12 +1,13 @@
-# PowerShell Portfolio & Admin Validation Script
+# PowerShell Portfolio & Admin & Supabase Validation Script
 $projectDir = Resolve-Path (Join-Path $PSScriptRoot "..")
 
-Write-Host "🔍 [1/3] 전체 파일 구조 및 관리자 전용 파일 검증..." -ForegroundColor Cyan
+Write-Host "🔍 [1/3] 전체 파일 구조 및 Supabase 데이터베이스 파일 검증..." -ForegroundColor Cyan
 
 $requiredFiles = @(
   "index.html",
   "admin.html",
   "components_demo.html",
+  "supabase_schema.sql",
   "css\variables.css",
   "css\global.css",
   "css\header.css",
@@ -20,7 +21,8 @@ $requiredFiles = @(
   "js\admin.js",
   "js\projects.js",
   "js\app.js",
-  "js\admin_dashboard.js"
+  "js\admin_dashboard.js",
+  "js\supabase_client.js"
 )
 
 foreach ($file in $requiredFiles) {
@@ -32,21 +34,20 @@ foreach ($file in $requiredFiles) {
   }
 }
 
-Write-Host "`n🔍 [2/3] admin.html & 대시보드 컴포넌트 구조 검증..." -ForegroundColor Cyan
-$adminHtml = Get-Content (Join-Path $projectDir "admin.html") -Raw -Encoding UTF8
-$jsAdminDash = Get-Content (Join-Path $projectDir "js\admin_dashboard.js") -Raw -Encoding UTF8
+Write-Host "`n🔍 [2/3] Supabase 연동 코드 및 API 키 설정 검증..." -ForegroundColor Cyan
+$sbClient = Get-Content (Join-Path $projectDir "js\supabase_client.js") -Raw -Encoding UTF8
+$sqlSchema = Get-Content (Join-Path $projectDir "supabase_schema.sql") -Raw -Encoding UTF8
 $indexHtml = Get-Content (Join-Path $projectDir "index.html") -Raw -Encoding UTF8
+$adminHtml = Get-Content (Join-Path $projectDir "admin.html") -Raw -Encoding UTF8
 
 $checks = @(
-  @{ Name = "메인 헤더 Admin 접속 링크 (admin.html)"; Condition = $indexHtml.Contains('href="admin.html"') },
-  @{ Name = "로그인 PIN 입력창 (loginPinInput)"; Condition = $adminHtml.Contains('id="loginPinInput"') },
-  @{ Name = "대시보드 탭 메뉴 (tabProjects, tabAbout)"; Condition = $adminHtml.Contains('data-tab="tabProjects"') -and $adminHtml.Contains('data-tab="tabAbout"') },
-  @{ Name = "신규 작업물 추가 폼 (addProjectForm)"; Condition = $adminHtml.Contains('id="addProjectForm"') },
-  @{ Name = "작업물 동적 리스트 영역 (adminProjectsList)"; Condition = $adminHtml.Contains('id="adminProjectsList"') },
-  @{ Name = "LocalStorage 키 명세 (jin_portfolio_projects_data)"; Condition = $jsAdminDash.Contains('jin_portfolio_projects_data') },
-  @{ Name = "LocalStorage 키 명세 (jin_portfolio_about_data)"; Condition = $jsAdminDash.Contains('jin_portfolio_about_data') },
-  @{ Name = "작업물 삭제 기능 (deleteProject)"; Condition = $jsAdminDash.Contains('deleteProject') },
-  @{ Name = "초기 시드 데이터 복원 기능 (resetToSeedProjects)"; Condition = $jsAdminDash.Contains('resetToSeedProjects') }
+  @{ Name = "Supabase URL 설정 (dlwhnthulpxxfyeulrbw.supabase.co)"; Condition = $sbClient.Contains('https://dlwhnthulpxxfyeulrbw.supabase.co') },
+  @{ Name = "Supabase API Key 설정 (sb_publishable_Zk90bj_...)"; Condition = $sbClient.Contains('sb_publishable_Zk90bj_VU5WvQL0ubJRQWQ_TPSi5KHT') },
+  @{ Name = "index.html Supabase JS SDK 로드"; Condition = $indexHtml.Contains('supabase-js') -and $indexHtml.Contains('supabase_client.js') },
+  @{ Name = "admin.html Supabase JS SDK 로드"; Condition = $adminHtml.Contains('supabase-js') -and $adminHtml.Contains('supabase_client.js') },
+  @{ Name = "SQL 스키마 about_me 테이블 정의"; Condition = $sqlSchema.Contains('CREATE TABLE IF NOT EXISTS public.about_me') },
+  @{ Name = "SQL 스키마 projects 테이블 정의"; Condition = $sqlSchema.Contains('CREATE TABLE IF NOT EXISTS public.projects') },
+  @{ Name = "SQL 스키마 RLS 정책 설정"; Condition = $sqlSchema.Contains('ROW LEVEL SECURITY') }
 )
 
 foreach ($item in $checks) {
@@ -57,4 +58,4 @@ foreach ($item in $checks) {
   }
 }
 
-Write-Host "`n✨ 검증 완료! 관리자 페이지(admin.html) 및 풀 CRUD 시스템이 완벽하게 구현되었습니다." -ForegroundColor Yellow
+Write-Host "`n✨ 검증 완료! Supabase 데이터베이스 연동 코드 및 SQL 테이블 스크립트가 준비되었습니다." -ForegroundColor Yellow

@@ -185,8 +185,20 @@ class AdminDashboard {
     }
   }
 
-  /* [ 5. About Me 관리 데이터 처리 ] */
-  loadAboutData() {
+  async loadAboutData() {
+    // 1. Supabase에서 읽기 시도
+    if (window.supabaseHelper) {
+      const sbAbout = await window.supabaseHelper.fetchAboutMe();
+      if (sbAbout) {
+        if (sbAbout.name) this.adminName.value = sbAbout.name;
+        if (sbAbout.role) this.adminRole.value = sbAbout.role;
+        if (sbAbout.field) this.adminField.value = sbAbout.field;
+        if (sbAbout.bio) this.adminBio.value = sbAbout.bio;
+        return;
+      }
+    }
+
+    // 2. LocalStorage 폴백
     const savedData = localStorage.getItem(this.aboutStorageKey);
     if (savedData) {
       try {
@@ -201,7 +213,7 @@ class AdminDashboard {
     }
   }
 
-  saveAboutData() {
+  async saveAboutData() {
     const dataToSave = {
       name: this.adminName.value.trim() || '남진혁',
       role: this.adminRole.value.trim() || 'AI Web/App Developer',
@@ -209,8 +221,13 @@ class AdminDashboard {
       bio: this.adminBio.value.trim()
     };
 
-    localStorage.setItem(this.aboutStorageKey, JSON.stringify(dataToSave));
-    alert('✅ 자기소개 정보가 성공적으로 저장되었습니다!');
+    // Supabase 및 LocalStorage 동시 저장
+    if (window.supabaseHelper) {
+      await window.supabaseHelper.saveAboutMe(dataToSave);
+    } else {
+      localStorage.setItem(this.aboutStorageKey, JSON.stringify(dataToSave));
+    }
+    alert('✅ 자기소개 정보가 Supabase DB 및 LocalStorage에 성공적으로 저장되었습니다!');
   }
 
   /* [ 6. Projects 풀 CRUD 처리 ] */
@@ -226,12 +243,23 @@ class AdminDashboard {
     return DEFAULT_SEED_PROJECTS;
   }
 
+  async fetchProjectsForAdmin() {
+    if (window.supabaseHelper) {
+      const sbProjects = await window.supabaseHelper.fetchProjects();
+      if (sbProjects && sbProjects.length > 0) {
+        localStorage.setItem(this.projectsStorageKey, JSON.stringify(sbProjects));
+        return sbProjects;
+      }
+    }
+    return this.getStoredProjects();
+  }
+
   saveProjects(projectsArray) {
     localStorage.setItem(this.projectsStorageKey, JSON.stringify(projectsArray));
     this.renderProjectsList();
   }
 
-  handleAddProject() {
+  async handleAddProject() {
     const tagsArray = this.pTags.value.split(',')
       .map(t => t.trim())
       .filter(t => t.length > 0)
@@ -249,25 +277,41 @@ class AdminDashboard {
     };
 
     const currentProjects = this.getStoredProjects();
-    currentProjects.unshift(newProject); // 목록 최상단에 신규 추가
+    currentProjects.unshift(newProject);
     this.saveProjects(currentProjects);
+
+    // Supabase DB 저장 연동
+    if (window.supabaseHelper) {
+      await window.supabaseHelper.saveProject(newProject);
+    }
 
     // 폼 초기화
     this.addProjectForm.reset();
-    alert('✨ 신규 작업물이 성공적으로 추가되었습니다!');
+    alert('✨ 신규 작업물이 Supabase DB 및 LocalStorage에 추가되었습니다!');
   }
 
-  deleteProject(projectId) {
+  async deleteProject(projectId) {
     if (confirm('정말로 이 작업물을 삭제하시겠습니까?')) {
       const currentProjects = this.getStoredProjects();
       const updatedProjects = currentProjects.filter(p => p.id !== projectId);
       this.saveProjects(updatedProjects);
+
+      if (window.supabaseHelper) {
+        await window.supabaseHelper.deleteProject(projectId);
+      }
     }
   }
 
-  resetToSeedProjects() {
+  async resetToSeedProjects() {
     if (confirm('모든 작업물 데이터를 초기 샘플 데이터로 복원하시겠습니까? 추가한 내용이 초기화됩니다.')) {
       localStorage.removeItem(this.projectsStorageKey);
+
+      if (window.supabaseHelper) {
+        for (const seedP of DEFAULT_SEED_PROJECTS) {
+          await window.supabaseHelper.saveProject(seedP);
+        }
+      }
+
       this.renderProjectsList();
       alert('🔄 작업물 데이터가 기본 샘플 데이터로 초기화되었습니다.');
     }

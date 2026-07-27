@@ -59,16 +59,39 @@ const PROJECTS_DATA = [
 
 class ProjectsManager {
   constructor() {
-    this.projects = this.loadProjects();
+    this.projects = this.loadProjectsLocal();
     this.activeFilter = 'all';
 
     this.initElements();
     this.bindEvents();
     this.renderProjects();
+    this.initSupabaseData();
   }
 
-  /* [ LocalStorage 연동 프로젝트 로드 ] */
-  loadProjects() {
+  /* [ Supabase 및 LocalStorage 연동 데이터 초기화 ] */
+  async initSupabaseData() {
+    // 1. 자기소개 Supabase 동기화
+    if (window.supabaseHelper) {
+      const sbAbout = await window.supabaseHelper.fetchAboutMe();
+      if (sbAbout) {
+        this.renderAboutSection(sbAbout);
+      } else {
+        this.loadAboutLocal();
+      }
+
+      // 2. 프로젝트 Supabase 동기화
+      const sbProjects = await window.supabaseHelper.fetchProjects();
+      if (sbProjects && sbProjects.length > 0) {
+        this.projects = sbProjects;
+        localStorage.setItem('jin_portfolio_projects_data', JSON.stringify(sbProjects));
+        this.renderProjects();
+      }
+    } else {
+      this.loadAboutLocal();
+    }
+  }
+
+  loadProjectsLocal() {
     const savedProjects = localStorage.getItem('jin_portfolio_projects_data');
     if (savedProjects) {
       try {
@@ -78,6 +101,25 @@ class ProjectsManager {
       }
     }
     return PROJECTS_DATA;
+  }
+
+  loadAboutLocal() {
+    const savedAbout = localStorage.getItem('jin_portfolio_about_data');
+    if (savedAbout) {
+      try {
+        const data = JSON.parse(savedAbout);
+        this.renderAboutSection(data);
+      } catch (e) {
+        console.error('LocalStorage About 파싱 실패:', e);
+      }
+    }
+  }
+
+  renderAboutSection(data) {
+    const bioElem = document.getElementById('aboutDisplayBio');
+    const fieldElem = document.getElementById('aboutDisplayField');
+    if (bioElem && data.bio) bioElem.textContent = data.bio;
+    if (fieldElem && data.field) fieldElem.textContent = data.field;
   }
 
   /* [ 1. DOM 엘리먼트 초기화 ] */
