@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Component Showcase | 2026 Nam Jin-hyeok AI Portfolio</title>
+  
+  <!-- 폰트 및 스타일 불러오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- 모듈화된 CSS 스타일 불러오기 -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/tech.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/footer.css">
+
+  <!-- 데모 페이지 전용 레이아웃 스타일 -->
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: var(--bg-dark-base);
+    }
+    
+    /* 좌측 컴포넌트 네비게이션 사이드바 */
+    .demo-sidebar {
+      width: 260px;
+      background: rgba(11, 15, 23, 0.95);
+      border-right: 1px solid var(--border-glass);
+      padding: 32px 20px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    
+    .demo-brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .demo-nav-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 20px 0 10px 0;
+    }
+    
+    .demo-nav-list {
+      list-style: none;
+    }
+    
+    .demo-nav-item a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .demo-nav-item a:hover {
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--text-main);
+    }
+    
+    /* 우측 컴포넌트 미리보기 메인 영역 */
+    .demo-main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 48px 60px;
+      max-width: 1100px;
+    }
+    
+    .demo-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 40px;
+    }
+    
+    .demo-section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-glass);
+      padding-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .demo-section-desc {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+    }
+    
+    /* 컬러 스와치 가이드 그리드 */
+    .color-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    
+    .swatch-card {
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-dark-surface);
+    }
+    
+    .swatch-color {
+      height: 80px;
+      width: 100%;
+    }
+    
+    .swatch-info {
+      padding: 12px;
+    }
+    
+    .swatch-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    
+    .swatch-hex {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-sub);
+    }
+    
+    .component-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    
+    .demo-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       사이드바 네비게이션 (Component Storybook Index)
+       ========================================================================== -->
+  <aside class="demo-sidebar">
+    <div class="demo-brand">
+      ✨ UI Design System
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-sub); margin-bottom: 16px;">
+      2026 Nam Jin-hyeok Portfolio
+    </p>
+
+    <div class="demo-nav-title">Design Tokens</div>
+    <ul class="demo-nav-list">
+      <li class="demo-nav-item"><a href="#colors">1. Color Palette</a></li>
+      <li class="demo-nav-item"><a href="#typography">2. Typography</a></li>
+    </ul>
+
+    <div class="demo-nav-title">UI Components</div>
+    <ul class="demo-nav-list">
+      <li class="demo-nav-item"><a href="#buttons">3. Buttons System</a></li>
+      <li class="demo-nav-item"><a href="#badges">4. Badges & Tags</a></li>
+      <li class="demo-nav-item"><a href="#cards">5. Glassmorphism Cards</a></li>
+      <li class="demo-nav-item"><a href="#inputs">6. Form & PIN Inputs</a></li>
+      <li class="demo-nav-item"><a href="#header-comp">7. Header & Nav</a></li>
+      <li class="demo-nav-item"><a href="#modal-comp">8. Admin PIN Modal</a></li>
+    </ul>
+
+    <div style="margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border-glass);">
+      <a href="index.html" class="btn btn-sm btn-primary" style="width: 100%; text-align: center;">
+        🚀 실제 메인 페이지 보기
+      </a>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       컴포넌트 데모 메인 본문
+       ========================================================================== -->
+  <main class="demo-main">
+    <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">
+      🎨 Component Design System Showcase
+    </h1>
+    <p style="font-size: 1.05rem; color: var(--text-sub); margin-bottom: 48px;">
+      design.md 스펙에 맞춰 분리 제작된 모든 UI 컴포넌트를 한자리에서 테스트하고 확인하는 데모 페이지입니다.
+    </p>
+
+    <!-- [ 1. Color Palette ] -->
+    <section id="colors" class="demo-section">
+      <h2 class="demo-section-title">1. Color Palette & Swatches</h2>
+      <p class="demo-section-desc">Deep Obsidian 다크 테마와 네온 글로우 포인트 컬러입니다.</p>
+      
+      <div class="color-swatch-grid">
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: #0B0F17;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Base Dark</div>
+            <div class="swatch-hex">#0B0F17</div>
+          </div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: #111827;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Dark Surface</div>
+            <div class="swatch-hex">#111827</div>
+          </div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: #06B6D4;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Neon Cyan</div>
+            <div class="swatch-hex">#06B6D4</div>
+          </div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: #8B5CF6;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Electric Violet</div>
+            <div class="swatch-hex">#8B5CF6</div>
+          </div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: #EC4899;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cyber Pink</div>
+            <div class="swatch-hex">#EC4899</div>
+          </div>
+        </div>
+        <div class="swatch-card">
+          <div class="swatch-color" style="background: linear-gradient(135deg, #06B6D4, #8B5CF6, #EC4899);"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Primary Gradient</div>
+            <div class="swatch-hex">Cyan -> Violet -> Pink</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 2. Typography ] -->
+    <section id="typography" class="demo-section">
+      <h2 class="demo-section-title">2. Typography System</h2>
+      <p class="demo-section-desc">영문 Outfit/Inter와 한글 Pretendard 가독성 서체 스케일입니다.</p>
+      
+      <div class="glass-card">
+        <div style="font-size: 3.25rem; font-weight: 800; line-height: 1.2; margin-bottom: 12px;">
+          Display H1 (52px) - AI로 상상을 현실로 만드는
+        </div>
+        <div style="font-size: 2.25rem; font-weight: 700; margin-bottom: 12px;">
+          Heading 1 H2 (36px) - Featured Projects & About Me
+        </div>
+        <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: var(--accent-cyan);">
+          Heading 2 H3 (24px) - AI스케치 해석기
+        </div>
+        <div style="font-size: 1.125rem; color: var(--text-sub); margin-bottom: 8px;">
+          Body Large (18px) - 최신 생성형 AI 트렌드를 반영한 웹앱 서비스를 개발합니다.
+        </div>
+        <div style="font-size: 1.0rem; color: var(--text-sub);">
+          Body Medium (16px) - 25세 또래 학생분들이 직접 접속해서 시연해볼 수 있는 직관적인 포트폴리오입니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 3. Buttons System ] -->
+    <section id="buttons" class="demo-section">
+      <h2 class="demo-section-title">3. Button System</h2>
+      <p class="demo-section-desc">3가지 규격(Large 52px, Medium 44px, Small 36px)과 3가지 스타일입니다.</p>
+      
+      <div class="glass-card">
+        <div class="component-row">
+          <span class="demo-label">Large (52px):</span>
+          <button class="btn btn-lg btn-primary">🚀 Primary Glow Button</button>
+          <button class="btn btn-lg btn-secondary">🐙 Secondary Glass Button</button>
+          <button class="btn btn-lg btn-outline">Outline Button</button>
+        </div>
+        <div class="component-row" style="margin-top: 24px;">
+          <span class="demo-label">Medium (44px):</span>
+          <button class="btn btn-md btn-primary">🚀 데모 체험하기</button>
+          <button class="btn btn-md btn-secondary">🐙 GitHub 코드보기</button>
+          <button class="btn btn-md btn-outline">자세히 보기</button>
+        </div>
+        <div class="component-row" style="margin-top: 24px;">
+          <span class="demo-label">Small (36px):</span>
+          <button class="btn btn-sm btn-primary">🔐 Admin Edit</button>
+          <button class="btn btn-sm btn-secondary">수정하기</button>
+          <button class="btn btn-sm btn-outline">취소</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 4. Badges & Tags ] -->
+    <section id="badges" class="demo-section">
+      <h2 class="demo-section-title">4. Badges & Technology Tags</h2>
+      <p class="demo-section-desc">기술 스택 표기에 사용하는 알약 형태(Pill-shape) 뱃지입니다.</p>
+      
+      <div class="glass-card">
+        <div class="component-row">
+          <span class="badge">#LLM</span>
+          <span class="badge">#OpenAI</span>
+          <span class="badge badge-purple">#React</span>
+          <span class="badge badge-purple">#Claude3.5</span>
+          <span class="badge badge-pink">#FastAPI</span>
+          <span class="badge badge-pink">#PWA</span>
+          <span class="badge">#WhisperAPI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 5. Glassmorphism Cards ] -->
+    <section id="cards" class="demo-section">
+      <h2 class="demo-section-title">5. Glassmorphism Cards</h2>
+      <p class="demo-section-desc">반투명 블러 질감과 은은한 글로우 호버 효과가 적용된 프로젝트 카드 샘플입니다.</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+        <!-- 프로젝트 카드 샘플 1 -->
+        <div class="glass-card project-card">
+          <div class="project-thumb">
+            <div class="project-thumb-overlay"></div>
+            <div class="project-thumb-icon">✏️</div>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="badge">#VisionAI</span>
+              <span class="badge badge-purple">#React</span>
+            </div>
+            <h3 class="project-title">AI스케치 해석기</h3>
+            <p class="project-desc">사용자가 그린 스케치 그림을 Vision AI가 해석하여 정교한 디지털 아트워크와 창의적인 묘사로 변환해 주는 AI 서비스입니다.</p>
+            <div class="project-actions">
+              <a href="https://ai.studio/apps/e6c079d3-b36e-4442-9be6-6cad19224489?fullscreenApplet=true" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">🚀 데모 체험하기</a>
+              <a href="https://github.com/namjinhyeok/ai-sketch-interpreter" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-secondary">🐙 GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 프로젝트 카드 샘플 2 -->
+        <div class="glass-card project-card">
+          <div class="project-thumb">
+            <div class="project-thumb-overlay"></div>
+            <div class="project-thumb-icon">🔮</div>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="badge badge-purple">#Claude3.5</span>
+              <span class="badge badge-pink">#PWA</span>
+            </div>
+            <h3 class="project-title">지능형 타로 & 운세 상담 AI</h3>
+            <p class="project-desc">학생 고민 공감 대화 알고리즘 기반으로 타로 풀이와 운세를 제공하는 모바일 앱입니다.</p>
+            <div class="project-actions">
+              <a href="#" class="btn btn-sm btn-primary">🚀 데모 체험하기</a>
+              <a href="#" class="btn btn-sm btn-secondary">🐙 GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 6. Form & PIN Inputs ] -->
+    <section id="inputs" class="demo-section">
+      <h2 class="demo-section-title">6. Form Controls & PIN Input</h2>
+      <p class="demo-section-desc">글래스모피즘 입력 폼과 관리자 PIN 4자리 입력창입니다.</p>
+      
+      <div class="glass-card" style="max-width: 500px;">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">관심 분야 입력 (Input Field)</label>
+          <input type="text" class="form-input" value="AI 트렌드 리서치 & 생성형 AI 웹앱 개발">
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label">자기소개 본문 (Textarea)</label>
+          <textarea class="form-textarea">AI 기술을 누구나 쉽게 경험할 수 있는 웹앱 서비스를 연구합니다.</textarea>
+        </div>
+
+        <div style="border-top: 1px solid var(--border-glass); padding-top: 20px;">
+          <label class="form-label" style="display: block; text-align: center; margin-bottom: 12px;">
+            PIN Digit Input (4-Digits Admin Key)
+          </label>
+          <div class="pin-input-group">
+            <input type="password" class="pin-digit-input" value="1">
+            <input type="password" class="pin-digit-input" value="2">
+            <input type="password" class="pin-digit-input" value="3">
+            <input type="password" class="pin-digit-input" value="4">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 7. Header Preview ] -->
+    <section id="header-comp" class="demo-section">
+      <h2 class="demo-section-title">7. Fixed Header Navigation</h2>
+      <p class="demo-section-desc">상단 고정 헤더 네비게이션 독립 테스트 영역입니다.</p>
+      
+      <div style="position: relative; height: 100px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-glass);">
+        <header class="header" style="position: absolute; top: 0; left: 0;">
+          <div class="container header-container">
+            <a href="#" class="logo">
+              <span class="logo-text">JINHYEOK.AI</span>
+              <span class="logo-dot"></span>
+            </a>
+            <ul class="nav-menu">
+              <li><a href="#" class="nav-link">About</a></li>
+              <li><a href="#" class="nav-link">Projects</a></li>
+              <li><a href="#" class="nav-link">Tech Stack</a></li>
+            </ul>
+            <button class="admin-toggle-btn">🔐 Admin Edit</button>
+          </div>
+        </header>
+      </div>
+    </section>
+
+    <!-- [ 8. Admin PIN Modal ] -->
+    <section id="modal-comp" class="demo-section">
+      <h2 class="demo-section-title">8. Admin PIN Authentication Modal</h2>
+      <p class="demo-section-desc">아래 버튼을 눌러 관리자 PIN 번호 인증 모달을 직접 띄우고 동작을 테스트하세요.</p>
+      
+      <div class="glass-card">
+        <button id="testModalBtn" class="btn btn-md btn-primary">
+          🔐 관리자 PIN 모달 팝업 테스트하기
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 관리자 모달 라이브 인스턴스 -->
+  <div id="adminModalOverlay" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-icon">🔐</div>
+      <h3 class="modal-title">Admin Authentication</h3>
+      <p class="modal-desc">자기소개 수정을 위한 관리자 비밀번호 4자리를 입력하세요.</p>
+
+      <div class="pin-input-group">
+        <input type="password" maxlength="1" class="pin-digit-input">
+        <input type="password" maxlength="1" class="pin-digit-input">
+        <input type="password" maxlength="1" class="pin-digit-input">
+        <input type="password" maxlength="1" class="pin-digit-input">
+      </div>
+
+      <div id="modalErrorMsg" class="modal-error-msg"></div>
+
+      <div class="modal-actions">
+        <button id="modalCancelBtn" class="btn btn-sm btn-outline">취소</button>
+        <button id="modalSubmitBtn" class="btn btn-sm btn-primary">확인 (Enter)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+  <script>
+    // 데모 모달 팝업 버튼 바인딩
+    document.getElementById('testModalBtn').addEventListener('click', () => {
+      window.adminManager.openModal();
+    });
+  </script>
+</body>
+</html>

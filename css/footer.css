@@ -1,0 +1,72 @@
+/* ==========================================================================
+   2026 Nam Jin-hyeok AI Portfolio - 푸터 스타일 (footer.css)
+   하단 소셜 링크, 카피라이트, 피드백 영역
+   ========================================================================== */
+
+.footer {
+  padding: 48px 0;
+  border-top: 1px solid var(--border-glass);
+  background: var(--bg-dark-base);
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-copyright {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+}
+
+.footer-subtext {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  color: var(--text-sub);
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: all 0.25s ease;
+}
+
+.social-link:hover {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: var(--accent-cyan);
+  color: var(--text-main);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .social-links {
+    justify-content: center;
+  }
+}

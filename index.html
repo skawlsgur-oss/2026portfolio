@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- 기본 메타 태그 & SEO 최적화 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nam Jin-hyeok | 2026 AI Web & App Portfolio</title>
+  <meta name="description" content="AI 트렌디 & 글로우 감성의 2026 남진혁 AI 웹/앱 개발 포트폴리오 사이트입니다.">
+
+  <!-- 웹 폰트 (Google Fonts & Pretendard CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <!-- 모듈화된 CSS 스타일 컴포넌트 불러오기 -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/tech.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       1. 네비게이션 헤더 컴포넌트 (Header & Nav)
+       ========================================================================== -->
+  <header class="header">
+    <div class="container header-container">
+      <!-- 브랜딩 로고 -->
+      <a href="#" class="logo">
+        <span class="logo-text">JINHYEOK.AI</span>
+        <span class="logo-dot"></span>
+      </a>
+
+      <!-- 네비게이션 링크 -->
+      <ul class="nav-menu">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#tech" class="nav-link">Tech Stack</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- 관리자 전용 편집 토글 버튼 -->
+      <div class="header-actions">
+        <button id="adminToggleBtn" class="admin-toggle-btn">
+          🔐 Admin Edit
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. 메인 콘텐츠 영역 (Main Sections)
+       ========================================================================== -->
+  <main>
+    <!-- [ 메인 히어로 섹션 (Hero Section) ] -->
+    <section id="hero" class="hero-section">
+      <div class="hero-glow-bg"></div>
+      <div class="container hero-content animate-fade-in">
+        <div class="hero-badge-wrapper">
+          <span class="hero-badge">
+            ✨ 2026 AI Trend & Web/App Developer
+          </span>
+        </div>
+        <h1 class="hero-title">
+          AI로 상상을 현실로 만드는 개발자,<br>
+          <span class="gradient-text">남진혁입니다.</span>
+        </h1>
+        <p class="hero-subtitle">
+          최신 생성형 AI 트렌드를 쉽고 유용한 웹앱 서비스로 개발합니다.<br>
+          학생 여러분이 직접 체험해볼 수 있는 다양한 AI 프로젝트를 확인해 보세요!
+        </p>
+        <div class="hero-cta-group">
+          <a href="#projects" class="btn btn-lg btn-primary">
+            🚀 작업물 둘러보기
+          </a>
+          <a href="https://github.com/namjinhyeok" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-secondary">
+            🐙 GitHub 방문하기
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 자기소개 섹션 (About Me Section + Admin Edit) ] -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">About <span>Nam Jin-hyeok</span></h2>
+          <p class="section-subtitle">AI 기술과 사용자 경험을 연결하는 개발자 소개</p>
+        </div>
+
+        <div class="about-grid">
+          <!-- 프로필 요약 카드 -->
+          <div class="glass-card profile-summary-card">
+            <div class="profile-avatar">
+              <div class="avatar-img-placeholder">👨‍💻</div>
+            </div>
+            <h3 class="profile-name">남진혁</h3>
+            <p class="profile-role">AI Web/App Developer</p>
+            <div class="badge-group" style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
+              <span class="badge">#AI_Trend</span>
+              <span class="badge badge-purple">#Web_App</span>
+              <span class="badge badge-pink">#LLM</span>
+            </div>
+          </div>
+
+          <!-- 자기소개 상세 카드 (Admin Mode로 실시간 편집 가능) -->
+          <div class="glass-card about-detail-card">
+            <div>
+              <div class="about-header-bar">
+                <h3 class="about-section-subtitle">개발 방향성 & 소개</h3>
+                <span id="adminIndicator" class="admin-indicator" style="display: none;">
+                  ✏️ Admin Edit Mode
+                </span>
+              </div>
+
+              <!-- 기본 읽기 모드 영역 -->
+              <div id="aboutDisplayBio" class="about-bio-text">
+안녕하세요! AI 기술 트렌드를 연구하고 이를 누구나 손쉽게 활용할 수 있는 웹앱으로 만드는 개발자 남진혁입니다.
+
+학생 및 또래 청년층이 일상에서 흥미롭게 사용할 수 있는 서비스(AI 숏폼 생성기, 타로 상담 AI 등)를 주력으로 개발하고 있습니다. 기술을 위한 기술이 아닌, 유용하고 재미있는 사용자 경험을 만드는 것에 깊은 관심을 가지고 있습니다.
+              </div>
+
+              <!-- 관리자 전용 수정 폼 (초기 숨김) -->
+              <div id="aboutEditForm" class="about-edit-form">
+                <div class="form-group">
+                  <label class="form-label">관심 분야 요약</label>
+                  <input type="text" id="inputField" class="form-input" value="AI 트렌드 리서치 & 생성형 AI 웹앱 개발">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">자기소개 본문 내용</label>
+                  <textarea id="inputBio" class="form-textarea"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <button id="saveAboutBtn" class="btn btn-sm btn-primary">💾 저장하기 (LocalStorage)</button>
+                  <button id="cancelEditBtn" class="btn btn-sm btn-outline">취소</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 하단 주요 관심 정보 요약 -->
+            <div style="border-top: 1px solid var(--border-glass); padding-top: 16px; margin-top: 20px;">
+              <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                <div>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">관심 분야</span>
+                  <p id="aboutDisplayField" style="font-size: 0.95rem; font-weight: 600; color: var(--accent-cyan);">
+                    AI 트렌드 리서치 & 생성형 AI 웹앱 개발
+                  </p>
+                </div>
+                <div>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">주요 역량</span>
+                  <p style="font-size: 0.95rem; font-weight: 600; color: var(--text-main);">
+                    AI API 연동, Full-stack Web/App, Prompt Eng.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 작업물 페이지 섹션 (Projects Section) ] -->
+    <section id="projects" class="section" style="background: rgba(17, 24, 39, 0.3);">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Featured <span>Projects</span></h2>
+          <p class="section-subtitle">직접 개발한 AI 웹사이트 및 모바일 앱 내역입니다. 라이브 데모를 통해 직접 체험해 보세요!</p>
+        </div>
+
+        <!-- 카테고리 필터 탭 -->
+        <div class="filter-container">
+          <button class="filter-btn active" data-filter="all">전체보기 (All)</button>
+          <button class="filter-btn" data-filter="web">AI 웹사이트 (Web)</button>
+          <button class="filter-btn" data-filter="app">AI 모바일 앱 (App)</button>
+        </div>
+
+        <!-- 동적 렌더링 프로젝트 카드 그리드 -->
+        <div id="projectsGrid" class="projects-grid">
+          <!-- projects.js 에서 동적으로 렌더링됩니다 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- [ 기술 스택 & AI 관심분야 섹션 (Tech Stack Section) ] -->
+    <section id="tech" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Tech & <span>AI Focus</span></h2>
+          <p class="section-subtitle">서비스를 구축할 때 즐겨 사용하는 기술 스택과 AI 도구입니다.</p>
+        </div>
+
+        <div class="tech-grid">
+          <!-- AI & Backend Card -->
+          <div class="glass-card">
+            <h3 class="tech-category-title">
+              <span class="tech-category-icon">🤖</span> AI & Backend Tech
+            </h3>
+            <div class="tech-list">
+              <div class="tech-pill"><span class="tech-pill-dot"></span>OpenAI GPT-4o / Realtime API</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Claude 3.5 Sonnet</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Whisper Speech-to-Text</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Python & FastAPI</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Node.js & Express</div>
+            </div>
+          </div>
+
+          <!-- Frontend & Design Card -->
+          <div class="glass-card">
+            <h3 class="tech-category-title">
+              <span class="tech-category-icon">🎨</span> Frontend & Web App
+            </h3>
+            <div class="tech-list">
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Modern HTML5 / CSS3 (Glassmorphism)</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>ES6+ JavaScript</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>React & Next.js</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>Tailwind CSS</div>
+              <div class="tech-pill"><span class="tech-pill-dot"></span>PWA (Progressive Web App)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       3. 관리자 비밀번호(PIN) 인증 모달 컴포넌트 (Modal UI)
+       ========================================================================== -->
+  <div id="adminModalOverlay" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-icon">🔐</div>
+      <h3 class="modal-title">Admin Authentication</h3>
+      <p class="modal-desc">자기소개 수정을 위한 관리자 비밀번호 4자리를 입력하세요.</p>
+
+      <!-- 4자리 PIN 입력 박스 -->
+      <div class="pin-input-group">
+        <input type="password" maxlength="1" class="pin-digit-input" autofocus>
+        <input type="password" maxlength="1" class="pin-digit-input">
+        <input type="password" maxlength="1" class="pin-digit-input">
+        <input type="password" maxlength="1" class="pin-digit-input">
+      </div>
+
+      <div id="modalErrorMsg" class="modal-error-msg"></div>
+
+      <div class="modal-actions">
+        <button id="modalCancelBtn" class="btn btn-sm btn-outline">취소</button>
+        <button id="modalSubmitBtn" class="btn btn-sm btn-primary">확인 (Enter)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       4. 푸터 컴포넌트 (Footer Section)
+       ========================================================================== -->
+  <footer id="contact" class="footer">
+    <div class="container footer-container">
+      <div class="footer-info">
+        <p class="footer-copyright">
+          © 2026 <strong>Nam Jin-hyeok</strong>. All rights reserved.
+        </p>
+        <p class="footer-subtext">
+          Designed with Glassmorphism & Neon Glow Aesthetics for AI Enthusiasts.
+        </p>
+      </div>
+
+      <div class="social-links">
+        <a href="https://github.com/namjinhyeok" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">🐙</a>
+        <a href="mailto:contact@jin-hyeok.ai" class="social-link" title="Email">✉️</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       5. 모듈화된 JavaScript 스크립트 불러오기
+       ========================================================================== -->
+  <script src="js/admin.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
