@@ -82,7 +82,7 @@ jsFiles.forEach(jsFile => {
 console.log('\n🔍 [4/4] PRD 요구사항 구현 여부 체크...');
 const prdChecks = [
   { name: '로고 (JINHYEOK.AI)', check: htmlContent.includes('JINHYEOK.AI') },
-  { name: '헤드라인 ("AI로 상상을 현실로 만드는 개발자")', check: htmlContent.includes('AI로 상상을 현실로 만드는 개발자') },
+  { name: '헤드라인 ("AI를 활용하여 서비스를 만드는 AI커뮤니케이터")', check: htmlContent.includes('AI를 활용하여 서비스를 만드는 AI커뮤니케이터') },
   { name: '관리자 편집 토글 (🔐 Admin Edit)', check: htmlContent.includes('🔐 Admin Edit') },
   { name: '카피라이트 (Nam Jin-hyeok)', check: htmlContent.includes('Nam Jin-hyeok') },
   { name: '프로젝트 이동 버튼 (데모 체험하기 / GitHub)', check: htmlContent.includes('🚀 데모 체험하기') && htmlContent.includes('🐙 GitHub') }
