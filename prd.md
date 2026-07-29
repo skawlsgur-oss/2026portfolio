@@ -122,13 +122,19 @@
   - Frontend: HTML/CSS, JavaScript, React, Tailwind / Vanilla CSS
   - AI & Backend: OpenAI API, Claude API, Python, Node.js
 
-### 5.6 [섹션 6] 이메일 연락폼 섹션 (Contact Form Section) ⭐ _신규 기능_
+### 5.6 [섹션 6] 이메일 연락폼 섹션 (Contact Form Section) ⭐ _신규 기능 & 스팸 방지_
 
 - **입력 폼 구성 요소:**
   - **이름 (name):** 발신자 이름 (필수 입력)
   - **이메일 주소 (email):** 발신자 이메일 주소 (필수 입력, 이메일 유효성 검사)
   - **메시지 내용 (message):** 문의/협업 제안 내용 (필수 입력, multiline textarea)
+  - **산수 보안 퀴즈 (captcha):** 동적 덧셈 퀴즈 (필수 정답 입력)
+  - **허니팟 트랩 (honeypot):** 봇 자동 입력을 감지하기 위한 숨김 필드 (`#contactWebsite`)
   - **이메일 보내기 버튼 (Send Email Button):** 로딩 애니메이션 및 전송 상태 피드백 지원
+- **3중 스팸 방어 사양 (3-Layer Anti-Spam):**
+  - **1단계 (Honeypot Trap):** CSS로 감춰진 숨김 입력 칸이 채워져 있을 경우 봇으로 간주하여 차단
+  - **2단계 (Math Quiz):** 페이지 로드마다 무작위 덧셈 퀴즈(`N + M = ?`)를 생성하여 정답 검증
+  - **3단계 (60초 쿨다운):** `localStorage` 타임스탬프 기반으로 60초 이내 연속 발송 시도 차단
 - **EmailJS 서비스 연동 사양:**
   - `ServiceID`: `service_h3t978d`
   - `TemplateID`: `template_m3cldia`

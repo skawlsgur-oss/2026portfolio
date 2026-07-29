@@ -62,6 +62,9 @@ const requiredIds = [
   'contactName',
   'contactEmail',
   'contactMessage',
+  'contactWebsite',
+  'contactCaptchaQuestion',
+  'contactCaptcha',
   'contactSubmitBtn',
   'contactStatusMsg'
 ];

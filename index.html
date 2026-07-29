@@ -298,6 +298,18 @@
                 <textarea id="contactMessage" name="message" class="form-textarea" placeholder="문의사항, 프로젝트 협업 제안 또는 전달하고 싶으신 메시지를 자유롭게 작성해 주세요." required></textarea>
               </div>
 
+              <!-- 허니팟 봇 트랩 (화면 비노출) -->
+              <input type="text" id="contactWebsite" name="website" class="honeypot-field" tabindex="-1" autocomplete="off">
+
+              <!-- 산수 보안 퀴즈 (스팸 방지) -->
+              <div class="form-group captcha-group">
+                <label for="contactCaptcha" class="captcha-label">
+                  <span>🛡️ 스팸 방지 퀴즈:</span>
+                  <span id="contactCaptchaQuestion" class="captcha-question">5 + 3 = ?</span>
+                </label>
+                <input type="number" id="contactCaptcha" name="captcha" class="form-input captcha-input" placeholder="정답" required>
+              </div>
+
               <!-- 상태 알림 메시지 영역 -->
               <div id="contactStatusMsg" class="contact-status-msg"></div>
 
