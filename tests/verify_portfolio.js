@@ -21,9 +21,11 @@ const requiredFiles = [
   'css/projects.css',
   'css/tech.css',
   'css/modal.css',
+  'css/contact.css',
   'css/footer.css',
   'js/admin.js',
   'js/projects.js',
+  'js/contact.js',
   'js/app.js'
 ];
 
@@ -55,7 +57,13 @@ const requiredIds = [
   'saveAboutBtn',
   'cancelEditBtn',
   'adminIndicator',
-  'projectsGrid'
+  'projectsGrid',
+  'contactForm',
+  'contactName',
+  'contactEmail',
+  'contactMessage',
+  'contactSubmitBtn',
+  'contactStatusMsg'
 ];
 
 requiredIds.forEach(id => {

@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/projects.css">
   <link rel="stylesheet" href="css/tech.css">
   <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/contact.css">
   <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
@@ -68,8 +69,8 @@
           </span>
         </div>
         <h1 class="hero-title">
-          AI를 활용하여 서비스를 만드는 AI커뮤니케이터,<br>
-          <span class="gradient-text">남진혁입니다.</span>
+          AI를 활용하여 서비스를 만드는<br>
+          AI커뮤니케이터, <span class="gradient-text">남진혁입니다.</span>
         </h1>
         <p class="hero-subtitle">
           최신 생성형 AI 트렌드를 쉽고 유용한 웹앱 서비스로 개발합니다.<br>
@@ -226,6 +227,89 @@
         </div>
       </div>
     </section>
+
+    <!-- [ 이메일 연락폼 섹션 (Contact Form Section) ] -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Contact <span>Me</span></h2>
+          <p class="section-subtitle">프로젝트 협업, 기술 문의 또는 자유로운 메시지를 편하게 남겨주세요.</p>
+        </div>
+
+        <div class="contact-wrapper">
+          <!-- 좌측 연락처 안내 카드 -->
+          <div class="glass-card contact-info-card">
+            <div class="contact-info-header">
+              <h3><span>💌</span> Let's Connect</h3>
+              <p>
+                생성형 AI 웹/앱 서비스 개발 및 프로젝트 협업 제안을 환영합니다.<br>
+                아래 폼을 작성해 주시면 확인 후 입력하신 이메일로 신속히 답변해 드리겠습니다.
+              </p>
+            </div>
+
+            <div class="contact-detail-list">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">✉️</div>
+                <div class="contact-detail-text">
+                  <h4>Direct Email</h4>
+                  <p>skawlsgur@hanyang.ac.kr</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">⚡</div>
+                <div class="contact-detail-text">
+                  <h4>Response Time</h4>
+                  <p>보통 24시간 이내 답변</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">🐙</div>
+                <div class="contact-detail-text">
+                  <h4>GitHub Repository</h4>
+                  <p>github.com/namjinhyeok</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측 연락폼 입력 카드 -->
+          <div class="glass-card contact-form-card">
+            <form id="contactForm" class="contact-form" novalidate>
+              <div class="form-group">
+                <label for="contactName" class="form-label">
+                  이름 / 닉네임 <span class="required">*</span>
+                </label>
+                <input type="text" id="contactName" name="name" class="form-input" placeholder="성함 또는 닉네임을 입력하세요" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail" class="form-label">
+                  이메일 주소 <span class="required">*</span>
+                </label>
+                <input type="email" id="contactEmail" name="email" class="form-input" placeholder="답변받으실 이메일 주소를 입력하세요 (e.g. name@example.com)" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage" class="form-label">
+                  메시지 내용 <span class="required">*</span>
+                </label>
+                <textarea id="contactMessage" name="message" class="form-textarea" placeholder="문의사항, 프로젝트 협업 제안 또는 전달하고 싶으신 메시지를 자유롭게 작성해 주세요." required></textarea>
+              </div>
+
+              <!-- 상태 알림 메시지 영역 -->
+              <div id="contactStatusMsg" class="contact-status-msg"></div>
+
+              <!-- 제출 버튼 -->
+              <button type="submit" id="contactSubmitBtn" class="btn btn-lg btn-primary btn-send-email">
+                <span>🚀 이메일 보내기</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- ==========================================================================
@@ -257,7 +341,7 @@
   <!-- ==========================================================================
        4. 푸터 컴포넌트 (Footer Section)
        ========================================================================== -->
-  <footer id="contact" class="footer">
+  <footer id="footer" class="footer">
     <div class="container footer-container">
       <div class="footer-info">
         <p class="footer-copyright">
@@ -276,12 +360,14 @@
   </footer>
 
   <!-- ==========================================================================
-       5. Supabase SDK 및 모듈화된 JavaScript 스크립트 불러오기
+       5. Supabase & EmailJS SDK 및 모듈화된 JavaScript 스크립트 불러오기
        ========================================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="js/supabase_client.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/projects.js"></script>
+  <script src="js/contact.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

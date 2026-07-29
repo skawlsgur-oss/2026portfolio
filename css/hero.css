@@ -45,6 +45,7 @@
   letter-spacing: -0.02em;
   margin-bottom: 24px;
   color: var(--text-main);
+  word-break: keep-all;
 }
 
 .hero-title .gradient-text {

@@ -75,7 +75,8 @@
 ├── 3. About Me Section (자기소개 및 관심 분야 + [관리자 편집 모드])
 ├── 4. Projects Section (AI 웹/앱 작업물 카드 & 라이브/GitHub 링크)
 ├── 5. Tech Stack & AI Focus (사용 가능 기술 & 관심 AI 트렌드)
-└── 6. Footer (소셜 링크 & 든든한 피드백)
+├── 6. Contact Form Section (EmailJS 기반 이메일 전송 연락폼)
+└── 7. Footer (소셜 링크 & 든든한 피드백)
 ```
 
 ---
@@ -121,7 +122,24 @@
   - Frontend: HTML/CSS, JavaScript, React, Tailwind / Vanilla CSS
   - AI & Backend: OpenAI API, Claude API, Python, Node.js
 
-### 5.6 [섹션 6] 푸터 (Footer)
+### 5.6 [섹션 6] 이메일 연락폼 섹션 (Contact Form Section) ⭐ _신규 기능_
+
+- **입력 폼 구성 요소:**
+  - **이름 (name):** 발신자 이름 (필수 입력)
+  - **이메일 주소 (email):** 발신자 이메일 주소 (필수 입력, 이메일 유효성 검사)
+  - **메시지 내용 (message):** 문의/협업 제안 내용 (필수 입력, multiline textarea)
+  - **이메일 보내기 버튼 (Send Email Button):** 로딩 애니메이션 및 전송 상태 피드백 지원
+- **EmailJS 서비스 연동 사양:**
+  - `ServiceID`: `service_h3t978d`
+  - `TemplateID`: `template_m3cldia`
+  - `API Key (PublicKey)`: `wIn4EaBHbg3kHVyRK`
+  - `수신 이메일 주소`: `skawlsgur@hanyang.ac.kr`
+- **사용자 경험 (UX):**
+  - 발송 중 버튼 비활성화 및 로딩 메시지 표시
+  - 발송 성공 시 성공 알림 토스트 출력 및 입력 폼 자동 초기화
+  - 발송 실패 시 오류 안내 메시지 출력
+
+### 5.7 [섹션 7] 푸터 (Footer)
 
 - **카피라이트:** `© 2026 Nam Jin-hyuk. All rights reserved.`
 - **연락처 & 링크:** 이메일, GitHub 주소, 블로그/SNS

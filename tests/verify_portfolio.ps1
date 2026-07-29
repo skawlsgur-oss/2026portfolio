@@ -16,11 +16,13 @@ $requiredFiles = @(
   "css\projects.css",
   "css\tech.css",
   "css\modal.css",
+  "css\contact.css",
   "css\footer.css",
   "css\admin.css",
   "js\admin.js",
   "js\projects.js",
   "js\app.js",
+  "js\contact.js",
   "js\admin_dashboard.js",
   "js\supabase_client.js"
 )
