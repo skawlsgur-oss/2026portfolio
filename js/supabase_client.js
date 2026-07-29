@@ -1,30 +1,52 @@
 /* ==========================================================================
    2026 Nam Jin-hyeok AI Portfolio - Supabase 클라이언트 연동 모듈 (supabase_client.js)
-   Supabase 클라이언트 초기화 및 비동기 데이터 베이스 API 헬퍼 메서드
+   서버리스 엔드포인트(/api/config)를 통해 동적으로 키를 수신하여 보안 초기화
    ========================================================================== */
 
-const SUPABASE_URL = 'https://dlwhnthulpxxfyeulrbw.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Zk90bj_VU5WvQL0ubJRQWQ_TPSi5KHT';
-
-// 1. Supabase 클라이언트 인스턴스 생성
 let supabaseClient = null;
-if (window.supabase && typeof window.supabase.createClient === 'function') {
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  console.log('⚡ Supabase Client Successfully Initialized!');
-} else {
-  console.warn('⚠️ Supabase JS SDK가 로드되지 않았습니다. LocalStorage로 폴백합니다.');
+
+async function getSupabaseClient() {
+  if (supabaseClient) return supabaseClient;
+
+  if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+    console.warn('⚠️ Supabase JS SDK가 로드되지 않았습니다. LocalStorage로 폴백합니다.');
+    return null;
+  }
+
+  try {
+    const response = await fetch('/api/config');
+    if (response.ok) {
+      const config = await response.json();
+      if (config.supabaseUrl && config.supabaseAnonKey) {
+        supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+        console.log('⚡ Supabase Client Successfully Initialized via Server Config!');
+        if (window.supabaseHelper) {
+          window.supabaseHelper.client = supabaseClient;
+        }
+        return supabaseClient;
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Supabase Config Fetch Fallback (LocalStorage 사용):', err.message);
+  }
+
+  return null;
 }
 
+// 비동기 초기화 시도
+getSupabaseClient();
+
 window.supabaseHelper = {
-  client: supabaseClient,
+  client: null,
 
   /* ==========================================
      [ 1. 자기소개 (about_me) DB 연동 ]
      ========================================== */
   async fetchAboutMe() {
-    if (!supabaseClient) return null;
+    const client = await getSupabaseClient();
+    if (!client) return null;
     try {
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from('about_me')
         .select('*')
         .eq('id', 1)
@@ -43,9 +65,10 @@ window.supabaseHelper = {
     localStorage.setItem('jin_portfolio_about_data', JSON.stringify(aboutData));
 
     // 2. Supabase DB 저장
-    if (!supabaseClient) return false;
+    const client = await getSupabaseClient();
+    if (!client) return false;
     try {
-      const { error } = await supabaseClient
+      const { error } = await client
         .from('about_me')
         .upsert({
           id: 1,
@@ -69,9 +92,10 @@ window.supabaseHelper = {
      [ 2. 작업물 (projects) DB 연동 ]
      ========================================== */
   async fetchProjects() {
-    if (!supabaseClient) return null;
+    const client = await getSupabaseClient();
+    if (!client) return null;
     try {
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from('projects')
         .select('*')
         .order('created_at', { ascending: false });
@@ -97,10 +121,10 @@ window.supabaseHelper = {
   },
 
   async saveProject(project) {
-    // 1. Supabase DB 저장
-    if (!supabaseClient) return false;
+    const client = await getSupabaseClient();
+    if (!client) return false;
     try {
-      const { error } = await supabaseClient
+      const { error } = await client
         .from('projects')
         .upsert({
           id: project.id,
@@ -123,9 +147,10 @@ window.supabaseHelper = {
   },
 
   async deleteProject(projectId) {
-    if (!supabaseClient) return false;
+    const client = await getSupabaseClient();
+    if (!client) return false;
     try {
-      const { error } = await supabaseClient
+      const { error } = await client
         .from('projects')
         .delete()
         .eq('id', projectId);

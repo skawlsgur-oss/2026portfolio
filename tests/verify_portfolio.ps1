@@ -24,7 +24,9 @@ $requiredFiles = @(
   "js\app.js",
   "js\contact.js",
   "js\admin_dashboard.js",
-  "js\supabase_client.js"
+  "js\supabase_client.js",
+  "api\send-email.js",
+  "api\config.js"
 )
 
 foreach ($file in $requiredFiles) {
@@ -42,9 +44,13 @@ $sqlSchema = Get-Content (Join-Path $projectDir "supabase_schema.sql") -Raw -Enc
 $indexHtml = Get-Content (Join-Path $projectDir "index.html") -Raw -Encoding UTF8
 $adminHtml = Get-Content (Join-Path $projectDir "admin.html") -Raw -Encoding UTF8
 
+$apiConfig = Get-Content (Join-Path $projectDir "api\config.js") -Raw -Encoding UTF8
+$apiEmail = Get-Content (Join-Path $projectDir "api\send-email.js") -Raw -Encoding UTF8
+
 $checks = @(
-  @{ Name = "Supabase URL 설정 (dlwhnthulpxxfyeulrbw.supabase.co)"; Condition = $sbClient.Contains('https://dlwhnthulpxxfyeulrbw.supabase.co') },
-  @{ Name = "Supabase API Key 설정 (sb_publishable_Zk90bj_...)"; Condition = $sbClient.Contains('sb_publishable_Zk90bj_VU5WvQL0ubJRQWQ_TPSi5KHT') },
+  @{ Name = "서버리스 /api/config 환경변수 로딩"; Condition = $apiConfig.Contains('process.env.SUPABASE_URL') -and $sbClient.Contains('/api/config') },
+  @{ Name = "서버리스 /api/send-email 환경변수 로딩"; Condition = $apiEmail.Contains('process.env.EMAILJS_SERVICE_ID') },
+  @{ Name = "소스코드 내 하드코딩 API 키 완벽 제거 검증"; Condition = -not $sbClient.Contains('sb_publishable_Zk90bj_VU5WvQL0ubJRQWQ_TPSi5KHT') },
   @{ Name = "index.html Supabase JS SDK 로드"; Condition = $indexHtml.Contains('supabase-js') -and $indexHtml.Contains('supabase_client.js') },
   @{ Name = "admin.html Supabase JS SDK 로드"; Condition = $adminHtml.Contains('supabase-js') -and $adminHtml.Contains('supabase_client.js') },
   @{ Name = "SQL 스키마 about_me 테이블 정의"; Condition = $sqlSchema.Contains('CREATE TABLE IF NOT EXISTS public.about_me') },

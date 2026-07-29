@@ -1,14 +1,9 @@
 /* ==========================================================================
    2026 Nam Jin-hyeok AI Portfolio - 이메일 연락폼 전송 모듈 (contact.js)
-   EmailJS SDK 기반 비동기 이메일 발송, 3중 스팸 방지(Honeypot + Math Captcha + Rate Limiting) 및 UI 피드백
+   서버리스 엔드포인트(/api/send-email) 호출 기반 이메일 발송 & 3중 스팸 방지
    ========================================================================== */
 
 (function () {
-  // 1. EmailJS Public API Key 및 서비스 설정
-  const EMAILJS_PUBLIC_KEY = 'wIn4EaBHbg3kHVyRK';
-  const SERVICE_ID = 'service_h3t978d';
-  const TEMPLATE_ID = 'template_m3cldia';
-
   class ContactManager {
     constructor() {
       this.lastSentKey = 'jin_portfolio_last_email_sent';
@@ -16,7 +11,6 @@
       this.captchaAnswer = null;
 
       this.initElements();
-      this.initEmailJS();
       this.generateCaptcha();
       this.bindEvents();
     }
@@ -34,21 +28,7 @@
       this.statusMsg = document.getElementById('contactStatusMsg');
     }
 
-    /* [ 2. EmailJS SDK 초기화 ] */
-    initEmailJS() {
-      if (window.emailjs) {
-        try {
-          window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-          console.log('⚡ EmailJS SDK Successfully Initialized!');
-        } catch (e) {
-          console.warn('EmailJS SDK init warning:', e.message);
-        }
-      } else {
-        console.warn('⚠️ EmailJS SDK가 로드되지 않았습니다.');
-      }
-    }
-
-    /* [ 3. 동적 산수 캡차 퀴즈 생성 (Layer 2) ] */
+    /* [ 2. 동적 산수 캡차 퀴즈 생성 (Layer 2) ] */
     generateCaptcha() {
       const num1 = Math.floor(Math.random() * 9) + 1; // 1~9 무작위 숫자
       const num2 = Math.floor(Math.random() * 9) + 1;
@@ -62,20 +42,20 @@
       }
     }
 
-    /* [ 4. 이벤트 바인딩 ] */
+    /* [ 3. 이벤트 바인딩 ] */
     bindEvents() {
       if (this.contactForm) {
         this.contactForm.addEventListener('submit', (e) => this.handleSubmit(e));
       }
     }
 
-    /* [ 5. 이메일 유효성 검사 헬퍼 ] */
+    /* [ 4. 이메일 유효성 검사 헬퍼 ] */
     isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
 
-    /* [ 6. 상태 메시지 렌더링 ] */
+    /* [ 5. 상태 메시지 렌더링 ] */
     showStatus(type, message) {
       if (!this.statusMsg) return;
       this.statusMsg.className = `contact-status-msg active ${type}`;
@@ -88,7 +68,7 @@
       this.statusMsg.textContent = '';
     }
 
-    /* [ 7. 폼 제출 핸들러 (3중 스팸 방어 검증) ] */
+    /* [ 6. 폼 제출 핸들러 (서버 API 호출 & 3중 스팸 방어 검증) ] */
     async handleSubmit(e) {
       e.preventDefault();
       this.hideStatus();
@@ -147,18 +127,26 @@
       this.setLoadingState(true);
 
       try {
-        if (!window.emailjs) {
-          throw new Error('EmailJS 라이브러리가 로드되지 않았습니다.');
-        }
-
-        // EmailJS 이메일 전송 API 호출
-        const response = await window.emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-          name: name,
-          email: email,
-          message: message
+        // Vercel Serverless Function 엔드포인트 (/api/send-email) 호출
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            message: message
+          })
         });
 
-        console.log('✅ EmailJS Send Success:', response.status, response.text);
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || '서버 응답 오류가 발생했습니다.');
+        }
+
+        console.log('✅ Serverless Email API Success:', data);
 
         // 성공 시 쿨다운 타임스탬프 기록
         localStorage.setItem(this.lastSentKey, Date.now().toString());
@@ -169,14 +157,14 @@
         this.generateCaptcha();
 
       } catch (error) {
-        console.error('❌ EmailJS Send Error:', error);
-        this.showStatus('error', `❌ 이메일 전송 중 오류가 발생했습니다. (${error.text || error.message || '잠시 후 다시 시도해 주세요'})`);
+        console.error('❌ Contact Form Send Error:', error);
+        this.showStatus('error', `❌ 이메일 전송 중 오류가 발생했습니다. (${error.message || '잠시 후 다시 시도해 주세요'})`);
       } finally {
         this.setLoadingState(false);
       }
     }
 
-    /* [ 8. 버튼 로딩 상태 제어 ] */
+    /* [ 7. 버튼 로딩 상태 제어 ] */
     setLoadingState(isLoading) {
       if (!this.submitBtn) return;
 

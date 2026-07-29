@@ -26,7 +26,9 @@ const requiredFiles = [
   'js/admin.js',
   'js/projects.js',
   'js/contact.js',
-  'js/app.js'
+  'js/app.js',
+  'api/send-email.js',
+  'api/config.js'
 ];
 
 let allExist = true;
